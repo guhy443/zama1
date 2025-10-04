@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zama Learning Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; color: #fff; }
+    .quiz-container { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
+    .header { width: 100%; padding: 15px; font-size: 22px; font-weight: bold; }
+    .question { font-size: 20px; margin: 20px 0; }
+    .options { list-style: none; padding: 0; }
+    .options li { margin: 10px 0; }
+    button { margin-top: 20px; padding: 10px 20px; border: none; border-radius: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 16px; cursor: pointer; }
+    button:hover { background: rgba(0,0,0,0.8); }
+    .result { font-size: 24px; font-weight: bold; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div id="quiz" class="quiz-container"></div>
+
+  <script>
+    const quizData = [
+      { question: "Blockchain me sabhi transactions public hone ka sabse bada nuksan kya hai?", options: ["Slow transactions", "Privacy ka loss", "Gas fees high", "Block size chhota"], answer: 1 },
+      { question: "FHE ka full form kya hai?", options: ["Fully Hybrid Encryption", "Fully Homomorphic Encryption", "Functional Homomorphic Encoding", "Fast Hashing Encryption"], answer: 1 },
+      { question: "Zama ka main kaam kya hai?", options: ["Web3 games banana", "FHE ko blockchain me lana", "Meme coins launch karna", "NFT trading platform"], answer: 1 },
+      { question: "FHE ka sabse unique feature kya hai?", options: ["Encrypted data par bina decrypt kiye computation karna", "Transactions ko fast banana", "Gas fees kam karna", "Blockchain scaling"], answer: 0 },
+      { question: "Zama ka blockchain execution layer ka naam kya hai?", options: ["zkEVM", "FHEVM", "L2 Rollup", "Optimistic VM"], answer: 1 },
+      { question: "Confidential blockchain ka matlab kya hai?", options: ["Sab kuch chhupana, kisi ko na dikhana", "Sirf zaroori information dikhana, baaki encrypted", "Government-only blockchain", "Slow aur secret chain"], answer: 1 },
+      { question: "Zama Creator Program ka ek main goal kya hai?", options: ["Meme banwana", "Education aur awareness spread karna", "Mining shuru karna", "NFT drop karna"], answer: 1 },
+      { question: "Zama ne apna kaunsa open-source library release kiya hai?", options: ["TFHE-rs", "Solidity-rs", "zkSync-rs", "RustCoin"], answer: 0 },
+      { question: "Anonymous transactions ka matlab kya hai?", options: ["Identity aur details har jagah visible", "User apna identity sirf jab chahe tab reveal kare", "Sab transactions hidden forever", "No transparency at all"], answer: 1 },
+      { question: "\u201cCypherpunks write code\u201d ka kya matlab hai?", options: ["Code sirf hackers ke liye hai", "Privacy defend karne ke liye khud system banana", "Coding ka koi role nahi hai", "Government hi privacy systems banayegi"], answer: 1 }
+    ];
+
+    const bgColors = [
+      "linear-gradient(135deg, #667eea, #764ba2)",
+      "linear-gradient(135deg, #ff9966, #ff5e62)",
+      "linear-gradient(135deg, #36d1dc, #5b86e5)",
+      "linear-gradient(135deg, #ff6a00, #ee0979)",
+      "linear-gradient(135deg, #56ab2f, #a8e063)",
+      "linear-gradient(135deg, #614385, #516395)",
+      "linear-gradient(135deg, #02aab0, #00cdac)",
+      "linear-gradient(135deg, #ff7e5f, #feb47b)",
+      "linear-gradient(135deg, #43cea2, #185a9d)",
+      "linear-gradient(135deg, #f7971e, #ffd200)"
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      document.body.style.background = bgColors[currentQuestion % bgColors.length];
+      const q = quizData[currentQuestion];
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `
+        <div class="header">Question ${currentQuestion + 1} of ${quizData.length}</div>
+        <div class="question">${q.question}</div>
+        <ul class="options">
+          ${q.options.map((opt, i) => `<li><input type='radio' name='q${currentQuestion}' value='${i}'> ${opt}</li>`).join('')}
+        </ul>
+        <button onclick="nextQuestion()">${currentQuestion === quizData.length - 1 ? "Finish" : "Next"}</button>
+      `;
+    }
+
+    function nextQuestion() {
+      const selected = document.querySelector(`input[name=q${currentQuestion}]:checked`);
+      if (selected && parseInt(selected.value) === quizData[currentQuestion].answer) {
+        score++;
+      }
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.body.style.background = "linear-gradient(135deg, #0f2027, #203a43, #2c5364)";
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = `
+        <div class="header">Quiz Completed 🎉</div>
+        <div class="result">You scored ${score} out of ${quizData.length}</div>
+      `;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
